@@ -1,3 +1,9 @@
+:root {
+  --bici-green: #0e7c5b;
+  --bici-dark: #0b3d31;
+  --bici-accent: #ffb703;
+}
+
 html {
   font-size: 14px;
 }
@@ -9,7 +15,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--bici-green);
 }
 
 html {
@@ -19,6 +25,108 @@ html {
 
 body {
   margin-bottom: 60px;
+  background: #f4f7f5;
+}
+
+/* Navbar institucional */
+.navbar-bici {
+  background: linear-gradient(90deg, var(--bici-dark), var(--bici-green)) !important;
+}
+.navbar-bici .navbar-brand,
+.navbar-bici .nav-link {
+  color: #fff !important;
+  font-weight: 600;
+}
+.navbar-bici .nav-link:hover {
+  color: var(--bici-accent) !important;
+}
+.navbar-bici .navbar-toggler {
+  border-color: #ffffff55;
+}
+
+/* Hero de operaciones */
+.hero-bici {
+  background: linear-gradient(120deg, var(--bici-dark), var(--bici-green));
+  color: #fff;
+  border-radius: 1rem;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 24px rgba(11, 61, 49, .25);
+}
+.hero-bici h1 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.hero-bici p {
+  margin: .35rem 0 0;
+  opacity: .9;
+}
+
+/* Tarjetas y tabla */
+.card-bici {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(11, 61, 49, .12);
+}
+.tabla-bici thead {
+  background: var(--bici-dark);
+  color: #fff;
+}
+.tabla-bici thead th {
+  border: 0;
+  padding: .8rem .75rem;
+}
+.tabla-bici tbody tr:hover {
+  background: #e9f5ef;
+}
+
+/* Botones */
+.btn-bici {
+  background: var(--bici-green);
+  border-color: var(--bici-green);
+  color: #fff;
+  font-weight: 600;
+}
+.btn-bici:hover {
+  background: var(--bici-dark);
+  border-color: var(--bici-dark);
+  color: #fff;
+}
+.btn-acento {
+  background: var(--bici-accent);
+  border-color: var(--bici-accent);
+  color: #3a2b00;
+  font-weight: 700;
+}
+.btn-acento:hover {
+  background: #e0a400;
+  border-color: #e0a400;
+  color: #3a2b00;
+}
+
+/* Login */
+.login-card {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 8px 28px rgba(11, 61, 49, .18);
+  overflow: hidden;
+}
+.login-side {
+  background: linear-gradient(160deg, var(--bici-dark), var(--bici-green));
+  color: #fff;
+  padding: 2.5rem 2rem;
+}
+.login-side h2 {
+  font-weight: 800;
+}
+
+footer.footer-bici {
+  background: var(--bici-dark);
+  color: #cfe6dc !important;
+}
+footer.footer-bici a {
+  color: var(--bici-accent) !important;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

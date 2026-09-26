@@ -3,21 +3,25 @@
     ViewData["Title"] = "Incidencias";
 }
 
-<h1>Incidencias abiertas en tiempo real</h1>
+<div class="hero-bici">
+    <h1>Incidencias abiertas en tiempo real</h1>
+    <p>🚲 Red de bicicletas compartidas · Panel de operaciones · <span id="ws-estado" class="badge bg-light text-dark">● conectando…</span></p>
+</div>
 
 @if (TempData["Exito"] is string exito)
 {
     <div class="alert alert-success">@exito</div>
 }
-<p><span id="ws-estado" class="badge bg-secondary">● conectando…</span></p>
 <div id="ws-aviso" class="alert alert-info mt-2 d-none"></div>
 
-<form method="get" class="row g-3 mb-3">
+<div class="card card-bici mb-3">
+<div class="card-body">
+<form method="get" class="row g-3">
     <div class="col-md-6">
-        <input name="q" class="form-control" placeholder="Buscar por estación o descripción…" value="@ViewBag.Q" />
+        <input name="q" class="form-control form-control-lg" placeholder="🔍 Buscar por estación o descripción…" value="@ViewBag.Q" />
     </div>
     <div class="col-md-4 d-flex gap-2">
-        <button class="btn btn-primary" type="submit">Buscar</button>
+        <button class="btn btn-bici" type="submit">Buscar</button>
         <a class="btn btn-secondary" href="/Operaciones/Incidencias">Limpiar</a>
     </div>
     @if (ViewBag.Fuente is string fuente)
@@ -25,6 +29,8 @@
         <div class="col-md-2 d-flex align-items-center"><span class="badge bg-info">Fuente: @fuente</span></div>
     }
 </form>
+</div>
+</div>
 
 @if (!Model.Any())
 {
@@ -32,7 +38,7 @@
 }
 else
 {
-    <table class="table table-striped">
+    <table class="table tabla-bici align-middle">
         <thead>
             <tr><th>#</th><th>Estación</th><th>Descripción</th><th>Prioridad</th><th>Reportada</th><th></th></tr>
         </thead>
@@ -40,15 +46,28 @@ else
             @foreach (var i in Model)
             {
                 <tr data-incidencia-id="@i.Id">
-                    <td>@i.Id</td>
-                    <td>@i.Estacion</td>
+                    <td><strong>#@i.Id</strong></td>
+                    <td>📍 @i.Estacion</td>
                     <td>@i.Descripcion</td>
-                    <td>@i.Prioridad</td>
+                    <td>
+                        @if (i.Prioridad >= 3)
+                        {
+                            <span class="badge bg-danger">🔴 Alta (@i.Prioridad)</span>
+                        }
+                        else if (i.Prioridad == 2)
+                        {
+                            <span class="badge bg-warning text-dark">🟡 Media (@i.Prioridad)</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">🟢 Baja (@i.Prioridad)</span>
+                        }
+                    </td>
                     <td>@i.FechaReporte.ToLocalTime().ToString("g")</td>
                     <td>
                         <form asp-action="Cerrar" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@i.Id" />
-                            <button class="btn btn-sm btn-outline-secondary" type="submit">Cerrar</button>
+                            <button class="btn btn-sm btn-acento" type="submit">✔ Cerrar</button>
                         </form>
                     </td>
                 </tr>
