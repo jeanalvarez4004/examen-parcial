@@ -1,0 +1,7 @@
+bin/
+obj/
+*.db-shm
+*.db-wal
+IncidenciasApp/app.db
+.git/
+.vs/
