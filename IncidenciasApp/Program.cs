@@ -14,6 +14,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// P2/B: Redis o memoria local segun Redis__ConnectionString.
+var redisCs = builder.Configuration["Redis:ConnectionString"];
+if (!string.IsNullOrWhiteSpace(redisCs))
+    builder.Services.AddStackExchangeRedisCache(o => o.Configuration = redisCs);
+else
+    builder.Services.AddDistributedMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

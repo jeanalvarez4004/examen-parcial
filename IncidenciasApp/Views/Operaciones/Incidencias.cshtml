@@ -3,11 +3,15 @@
     ViewData["Title"] = "Incidencias";
 }
 
-<h1>Incidencias abiertas</h1>
+<h1>Incidencias abiertas con consulta rápida</h1>
 
 @if (TempData["Exito"] is string exito)
 {
     <div class="alert alert-success">@exito</div>
+}
+@if (ViewBag.Fuente is string fuente)
+{
+    <p><span class="badge bg-info">Fuente: @fuente</span></p>
 }
 
 @if (!Model.Any())
