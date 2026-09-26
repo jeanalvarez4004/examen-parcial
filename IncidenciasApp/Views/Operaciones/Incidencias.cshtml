@@ -1,0 +1,42 @@
+@model IEnumerable<IncidenciasApp.Models.Incidencia>
+@{
+    ViewData["Title"] = "Incidencias";
+}
+
+<h1>Incidencias abiertas</h1>
+
+@if (TempData["Exito"] is string exito)
+{
+    <div class="alert alert-success">@exito</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No hay incidencias abiertas.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr><th>#</th><th>Estación</th><th>Descripción</th><th>Prioridad</th><th>Reportada</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>@i.Id</td>
+                    <td>@i.Estacion</td>
+                    <td>@i.Descripcion</td>
+                    <td>@i.Prioridad</td>
+                    <td>@i.FechaReporte.ToLocalTime().ToString("g")</td>
+                    <td>
+                        <form asp-action="Cerrar" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@i.Id" />
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">Cerrar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
