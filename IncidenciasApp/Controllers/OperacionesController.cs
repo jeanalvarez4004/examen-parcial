@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 using IncidenciasApp.Data;
 using IncidenciasApp.Models;
@@ -18,17 +19,23 @@ public class OperacionesController : Controller
     private readonly ApplicationDbContext _context;
     private readonly IDistributedCache _cache;
     private readonly AlgoliaSearchService _algolia;
+    private readonly PieHostPublisher _pie;
+    private readonly PieHostOptions _pieOpt;
     private readonly ILogger<OperacionesController> _log;
 
     public OperacionesController(
         ApplicationDbContext context,
         IDistributedCache cache,
         AlgoliaSearchService algolia,
+        PieHostPublisher pie,
+        IOptions<PieHostOptions> pieOpt,
         ILogger<OperacionesController> log)
     {
         _context = context;
         _cache = cache;
         _algolia = algolia;
+        _pie = pie;
+        _pieOpt = pieOpt.Value;
         _log = log;
     }
 
@@ -89,13 +96,34 @@ public class OperacionesController : Controller
         if (inc is null) return NotFound();
         if (inc.Estado == EstadoIncidencia.Abierta)
         {
+            // P3/C: primero se guarda el estado...
             inc.Estado = EstadoIncidencia.Cerrada;
             await _context.SaveChangesAsync();
-            // P2/B: invalida la clave antes de volver a consultar.
+            // P2/B: ...se invalida la clave antes de volver a consultar...
             await _cache.RemoveAsync(CacheKeyAbiertas);
             _log.LogInformation("Cache {Key} invalidada al cerrar #{Id}.", CacheKeyAbiertas, id);
+            // ...y despues se publica el evento.
+            await _pie.PublicarIncidenciaActualizadaAsync(inc.Id, inc.Estado.ToString());
             TempData["Exito"] = $"Incidencia #{id} cerrada.";
         }
         return RedirectToAction(nameof(Incidencias));
+    }
+
+    // Config publica para el navegador (sin Secret) + estado vigente para resync.
+    [HttpGet]
+    public IActionResult RealtimeConfig()
+    {
+        if (!_pie.Configurado) return Json(new { configurado = false });
+        return Json(new { configurado = true, clusterId = _pieOpt.ClusterId, apiKey = _pieOpt.Key, room = _pieOpt.Room });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> AbiertasJson()
+    {
+        var ids = await _context.Incidencias
+            .Where(i => i.Estado == EstadoIncidencia.Abierta)
+            .Select(i => i.Id)
+            .ToListAsync();
+        return Json(ids);
     }
 }
