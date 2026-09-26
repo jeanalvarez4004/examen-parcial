@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: examen-parcial-incidencias
+    runtime: docker
+    plan: free
+    branch: main
+    healthCheckPath: /
+    # UNA sola instancia.
+    numInstances: 1
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        value: DataSource=app.db;Cache=Shared
+      - key: Algolia__AppId
+        sync: false
+      - key: Algolia__ApiKey
+        sync: false
+      - key: Algolia__IndexName
+        value: incidencias
+      - key: Redis__ConnectionString
+        sync: false
+      - key: PieHost__ClusterId
+        sync: false
+      - key: PieHost__Key
+        sync: false
+      - key: PieHost__Secret
+        sync: false
+      - key: PieHost__Room
+        value: incidencias
