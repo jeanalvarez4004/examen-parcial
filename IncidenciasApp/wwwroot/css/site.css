@@ -121,6 +121,33 @@ body {
   font-weight: 800;
 }
 
+/* Portada de inicio */
+.portada-bici {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(255, 183, 3, .35), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(255, 255, 255, .12), transparent 40%),
+    linear-gradient(130deg, var(--bici-dark) 20%, var(--bici-green) 80%);
+  border-radius: 1.25rem;
+  padding: 3.5rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 32px rgba(11, 61, 49, .3);
+}
+.portada-contenido {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+}
+.portada-contenido h1 {
+  font-weight: 800;
+}
+.portada-eyebrow {
+  letter-spacing: 3px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--bici-accent);
+}
+
 footer.footer-bici {
   background: var(--bici-dark);
   color: #cfe6dc !important;
