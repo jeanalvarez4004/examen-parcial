@@ -20,6 +20,18 @@ builder.Services.Configure<IncidenciasApp.Services.PieHostOptions>(
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IncidenciasApp.Services.PieHostPublisher>();
 
+// P2/B: Redis o memoria local segun Redis__ConnectionString.
+var redisCs = builder.Configuration["Redis:ConnectionString"];
+if (!string.IsNullOrWhiteSpace(redisCs))
+    builder.Services.AddStackExchangeRedisCache(o => o.Configuration = redisCs);
+else
+    builder.Services.AddDistributedMemoryCache();
+
+// P1/A: Algolia (opciones por env Algolia__*). Sin claves => respaldo local.
+builder.Services.Configure<IncidenciasApp.Services.AlgoliaOptions>(
+    builder.Configuration.GetSection(IncidenciasApp.Services.AlgoliaOptions.Section));
+builder.Services.AddSingleton<IncidenciasApp.Services.AlgoliaSearchService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
