@@ -1,8 +1,52 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="portada-bici">
+    <div class="portada-contenido">
+        <p class="portada-eyebrow">🚲 RED DE BICICLETAS COMPARTIDAS</p>
+        <h1 class="display-4">Bienvenido a BiciOps</h1>
+        <p class="lead">Plataforma de operaciones para registrar, buscar y resolver las averías de nuestras estaciones, con actualización en tiempo real.</p>
+        <div class="d-flex gap-2 justify-content-center flex-wrap">
+            <a class="btn btn-acento btn-lg" href="/Operaciones/Incidencias">🚨 Ver incidencias</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a class="btn btn-outline-light btn-lg" asp-area="Identity" asp-page="/Account/Manage/Index">Mi cuenta</a>
+            }
+            else
+            {
+                <a class="btn btn-outline-light btn-lg" asp-area="Identity" asp-page="/Account/Login">Iniciar sesión</a>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-4">
+        <div class="card card-bici h-100">
+            <div class="card-body text-center">
+                <div class="fs-1">🔍</div>
+                <h5>Búsqueda al instante</h5>
+                <p class="text-muted">Encuentra averías por estación o descripción con el índice de búsqueda.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-bici h-100">
+            <div class="card-body text-center">
+                <div class="fs-1">⚡</div>
+                <h5>Consulta rápida</h5>
+                <p class="text-muted">El listado general se sirve desde caché para responder en milisegundos.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-bici h-100">
+            <div class="card-body text-center">
+                <div class="fs-1">📡</div>
+                <h5>Tiempo real</h5>
+                <p class="text-muted">Los cierres se reflejan en todas las pantallas sin recargar.</p>
+            </div>
+        </div>
+    </div>
 </div>
