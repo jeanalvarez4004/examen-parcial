@@ -14,6 +14,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// P3/C: PieHost (PieHost__*). HttpClient para publicar desde el servidor.
+builder.Services.Configure<IncidenciasApp.Services.PieHostOptions>(
+    builder.Configuration.GetSection(IncidenciasApp.Services.PieHostOptions.Section));
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IncidenciasApp.Services.PieHostPublisher>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -3,12 +3,14 @@
     ViewData["Title"] = "Incidencias";
 }
 
-<h1>Incidencias abiertas</h1>
+<h1>Incidencias abiertas en tiempo real</h1>
 
 @if (TempData["Exito"] is string exito)
 {
     <div class="alert alert-success">@exito</div>
 }
+<p><span id="ws-estado" class="badge bg-secondary">● conectando…</span></p>
+<div id="ws-aviso" class="alert alert-info mt-2 d-none"></div>
 
 @if (!Model.Any())
 {
@@ -23,7 +25,7 @@ else
         <tbody>
             @foreach (var i in Model)
             {
-                <tr>
+                <tr data-incidencia-id="@i.Id">
                     <td>@i.Id</td>
                     <td>@i.Estacion</td>
                     <td>@i.Descripcion</td>
@@ -39,4 +41,35 @@ else
             }
         </tbody>
     </table>
+}
+
+@section Scripts {
+<script src="https://cdn.piesocket.com/piesocket.js"></script>
+<script>
+(function () {
+  var badge = document.getElementById('ws-estado');
+  var aviso = document.getElementById('ws-aviso');
+  function setEstado(t, cls) { badge.textContent = '● ' + t; badge.className = 'badge ' + cls; }
+  function resync() {
+    fetch('/Operaciones/AbiertasJson').then(function (r) { return r.json(); }).then(function (ids) {
+      document.querySelectorAll('tr[data-incidencia-id]').forEach(function (tr) {
+        if (!ids.includes(parseInt(tr.getAttribute('data-incidencia-id')))) tr.remove();
+      });
+    }).catch(function () {});
+  }
+  fetch('/Operaciones/RealtimeConfig').then(function (r) { return r.json(); }).then(function (cfg) {
+    if (!cfg.configurado) { setEstado('tiempo real no configurado', 'bg-warning'); return; }
+    var ps = new PieSocket({ clusterId: cfg.clusterId, apiKey: cfg.apiKey });
+    var canal = ps.subscribe(cfg.room);
+    canal.listen('system:connected', function () { setEstado('en línea', 'bg-success'); resync(); });
+    canal.listen('IncidenciaActualizada', function (d) {
+      var tr = document.querySelector('tr[data-incidencia-id="' + d.Id + '"]');
+      if (tr && d.Estado === 'Cerrada') tr.remove();
+      aviso.textContent = 'Incidencia #' + d.Id + ' ahora está ' + d.Estado + '.';
+      aviso.classList.remove('d-none');
+    });
+    setEstado('en línea', 'bg-success');
+  }).catch(function () { setEstado('sin conexión', 'bg-danger'); });
+})();
+</script>
 }
