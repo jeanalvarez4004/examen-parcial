@@ -9,10 +9,20 @@
 {
     <div class="alert alert-success">@exito</div>
 }
-@if (ViewBag.Fuente is string fuente)
-{
-    <p><span class="badge bg-info">Fuente: @fuente</span></p>
-}
+
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-6">
+        <input name="q" class="form-control" placeholder="Buscar por estación o descripción…" value="@ViewBag.Q" />
+    </div>
+    <div class="col-md-4 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+        <a class="btn btn-secondary" href="/Operaciones/Incidencias">Limpiar</a>
+    </div>
+    @if (ViewBag.Fuente is string fuente)
+    {
+        <div class="col-md-2 d-flex align-items-center"><span class="badge bg-info">Fuente: @fuente</span></div>
+    }
+</form>
 
 @if (!Model.Any())
 {

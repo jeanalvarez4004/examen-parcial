@@ -21,6 +21,11 @@ if (!string.IsNullOrWhiteSpace(redisCs))
 else
     builder.Services.AddDistributedMemoryCache();
 
+// P1/A: Algolia (opciones por env Algolia__*). Sin claves => respaldo local.
+builder.Services.Configure<IncidenciasApp.Services.AlgoliaOptions>(
+    builder.Configuration.GetSection(IncidenciasApp.Services.AlgoliaOptions.Section));
+builder.Services.AddSingleton<IncidenciasApp.Services.AlgoliaSearchService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
