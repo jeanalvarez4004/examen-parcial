@@ -4,8 +4,8 @@ Operaciones registra averías por estación. Pantalla `/Operaciones/Incidencias`
 listado rápido (Redis) y actualización en tiempo real (PieHost). Tres desarrollos simultáneos
 fusionados sin perder funciones, desplegado en Render.
 
-- **URL Render:** _(pegar aquí, ej. `https://examen-parcial-incidencias.onrender.com`)_
-- **Commit desplegado:** _(pegar el hash de main al cerrar)_
+- **URL Render:** `https://examen-parcial-emkh.onrender.com`
+- **Commit desplegado:** `c7201fce4721b93298974ea6902c11b43d6b7d1f` (merge PR #4)
 - **Stack:** .NET 10, ASP.NET Core MVC + Identity, EF Core + SQLite, Algolia.Search 7.x,
   Redis (StackExchange), PieSocket JS + publish HTTP, Docker.
 
