@@ -480,3 +480,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# SQLite runtime (migraciones + seed la recrean)
+*.db-shm
+*.db-wal
+IncidenciasApp/app.db
